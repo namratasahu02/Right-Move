@@ -1,0 +1,197 @@
+{% load static %}
+{% load states %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <title> RightMove | sell & buy property</title>
+    <link rel="icon" type="image/x-icon" href="../static/logo.png">
+    <link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '/fontawesome/css/all.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static '/sass/main.css' %}">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="bg-light shadow-lg sticky-top border-bottom border-2 border-warning">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-dark py-1">
+                    <div class="container-fluid">
+                        <a class="nav-link active d-flex align-items-center" aria-current="page" href="/">
+                            <img src="../static/logo.svg" alt="" height="40px">
+                            <h5 class="px-2 pt-2 text-dark">Right Move</h6>
+                        </a>
+                        <div class="d-flex">
+                            <button class="btn text-dark d-lg-none" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#search" aria-expanded="false" aria-controls="search">
+                                <i class="fas fa-search text-dark"></i>
+                            </button>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#sell-dropdown" aria-controls="sell-dropdown" aria-expanded="false"
+                                aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </div>
+
+                        <div class="collapse navbar-collapse justify-content-end" id="sell-dropdown">
+                            <ul class="nav flex justify-content-center align-items-center">
+                                <li class="nav-item">
+                                    <form action="/search" class="py-2" method="GET">
+                                        <div class="d-flex rounded-pill shadow overflow-hidden border border-warning">
+                                            <input type="text" name="search_value" class="w-100 border-0 px-4 py-2"
+                                                placeholder="Search property here...">
+                                            <button class="btn text-dark" type="submit">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-dark fs-5" href="#" id="acMenu"
+                                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Account
+                                    </a>
+                                    <ul class="dropdown-menu mt-1" aria-labelledby="acMenu">
+                                        <li><a class="dropdown-item" href="/vendor">My Dashboard</a></li>
+                                        <!-- <li><a class="dropdown-item" href="#">Ad packages</a></li> -->
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        {% if user.is_authenticated %}
+                                        <li><a class="dropdown-item" href="/authenticaion/logout">Logout</a></li>
+                                        {% else %}
+                                        <li><a class="dropdown-item" href="/authenticaion/login">Login</a></li>
+                                        <li><a class="dropdown-item" href="/authenticaion/registration">Create new
+                                                account</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item mt-1">
+                                    <a href="/vendor/add"
+                                        class="btn btn-warning rounded-pill nav-link px-1 px-md-3 py-1">Post
+                                        Property
+                                        <span class="btn btn-dark py-0 px-1 px-md-2 rounded-pill">Free</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="collapse" id="search">
+                    <form action="/search" class="py-2" method="GET">
+                        <div class="d-flex rounded-pill shadow-lg overflow-hidden">
+                            <input type="text" name="search_value" class="w-100 border-0 px-4 py-2 outline-none"
+                                placeholder="Search property here...">
+                            <input type="submit" class="btn btn-warning rounded-0 py-2 px-2 px-md-4" value="Search">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </header>
+        {% block content %}
+
+        {% endblock content %}
+        <footer class="footer bg-secondary text-white">
+            <div class="container">
+                <div class="row mb-4 pb-3 no-gutters">
+                    <div class="col-md-4 mb-md-0 mb-4 d-flex" style="background:#404b51 ; transform: translate(0% , -20%);">
+                        <div class="con con-1 w-100 py-5">
+                            <div class="con-info w-100 text-center"  data-aos="zoom-in-right" data-aos-duration="700">
+                                <div class="icon d-flex align-items-center justify-content-center">
+                                    <span class="fas fa-phone"></span>
+                                </div>
+                                <div class="text">
+                                    <span>09088098</span> <br>
+                                    <span>0000908809</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-md-0 mb-4 d-flex" style="background: #31393d; transform: translate(0% , -20%);">
+                        <div class="con con-2 w-100 py-5">
+                            <div class="con-info w-100 text-center" data-aos="zoom-out-up" data-aos-duration="700">
+                                <div class="icon d-flex align-items-center justify-content-center">
+                                    <span class="fas fa-envelope"></span>
+                                </div>
+                                <div class="text">
+                                    <span>info@email.com</span> <br>
+                                    <span>info2@email.com</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-md-0 mb-4 d-flex" style="background-repeat: no-repeat; background-size: cover; background:#404b51 ; transform: translate(0% , -20%) ;">
+                        <div class="con con-3 w-100 py-5">
+                            <div class="con-info w-100 text-center" data-aos="zoom-in-left"  data-aos-duration="700">
+                                <div class="icon d-flex align-items-center justify-content-center">
+                                    <span class="fas fa-map"></span>
+                                </div>
+                                <div class="text">
+                                    <span>mp nagar zone1 ,Bhopal </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <ul class="list-unstyled d-flex justify-content-evenly flex-wrap">
+                            <li class="mx-2">
+                                <i class="fab fa-facebook"></i>
+                                <a class="text-white text-decoration-none" href="https://www.facebook.com/rightmove.co.uk/" class="d-block">Facebook</a>
+                            </li>
+                            <li class="mx-2">
+                                <i class="fab fa-instagram"></i>
+                                <a class="text-white text-decoration-none" href="https://www.instagram.com/rightmoveuk/?hl=en" class="d-block">Instagram</a>
+                            </li>
+                            <li class="mx-2">
+                                <i class="fab fa-linkedin"></i>
+                                <a class="text-white text-decoration-none" href="https://www.linkedin.com/company/rightmove/" class="d-block">Linkedin</a>
+                            </li>
+                            <li class="mx-2">
+                                <i class="fab fa-youtube"></i>
+                                <a class="text-white text-decoration-none" href="https://www.youtube.com/channel/UCbCBgo5dwnjs9TKqq8otA0A" class="d-block">Youtube</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row mt-5 pt-4 border-top">
+                    <center class="mb-3">
+                        <p class="copyright mb-0">
+                            Copyright ©
+                            <script>document.write(new Date().getFullYear());</script>
+                            All rights reserved by <a href="#" target="_blank">RightMove</a>
+                        </p>
+                    </center>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Back to top button -->
+        <button type="button" class="btn btn-warning position-fixed" id="btn-back-to-top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{% static '/jQuery/jQuery.js' %}"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static '/bootstrap/js/bootstrap.min.js' %}"> </script>
+    <script src="{% static '/fontawesome/js/all.js' %}"> </script>
+    <script src="{% static '/script/all.js' %}"> </script>
+    <script>
+        AOS.init();
+    </script>
+    {% block script %}
+    {% endblock script %}
+</body>
+
+</html>

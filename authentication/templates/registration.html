@@ -1,0 +1,136 @@
+{% extends 'basic.html' %}
+{%load static %}
+
+{% block content %}
+<style>
+    header {
+        display: none !important;
+    }
+</style>
+<div class="authentication newAccount">
+    <section class="gradient-custom p-md-5 px-2 py-5">
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            {% for message in messages %}
+            <div class="alert {{ message.tags }} alert-dismissible fade show sticky-top col-md-7 col-12" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            <div class="col-md-10 col-lg-7 col-12">
+                <div class="bg-light p-lg-5 p-md-4 p-3 py-5 shadow" style="border-radius: 1rem;">
+                    <div class="d-flex align-items-center mb-3 pb-1">
+                        <a class="text-decoration-none d-flex align-items-stretch" href="/">
+                            <img src="{% static '/logo.png' %}" height="40px" alt=""> &nbsp; &nbsp;
+                            <span class="h2 fw-bold mb-0 text-dark ">K-ESTATE</span>
+                        </a>
+                    </div>
+                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Create new account</h5>
+                    <form method="POST" class="form" enctype="multipart/form-data"> {% csrf_token %}
+                        <!-- Name -->
+                        <div class="row g-3 pb-2">
+                            <div class="col-md">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="f_name" name="fname" placeholder="abhay"
+                                        required {% if f_name %}value="{{f_name}}" {% endif %}>
+                                    <label for="f_name">First name <span class="text-danger">*</span></label>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="l_name" name="lname" placeholder="rana"
+                                        required {% if l_name %}value="{{l_name}}" {% endif %}>
+                                    <label for="l_name">Last name <span class="text-danger">*</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Email / Phone -->
+                        <div class="row g-3 py-2">
+                            <div class="col-md">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="email" name="email" required
+                                        placeholder="name@example.com" {% if email %}value="{{email}}" {% endif %}>
+                                    <label for="email">Email address <span class="text-danger">*</span></label>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="phone" name="phone" required
+                                        placeholder="+91 9876543210" {% if phone %}value="{{phone}}" {% endif %}>
+                                    <label for="phone">Phone Number <span class="text-danger">*</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- GST / Gender -->
+                        <div class="row g-3 py-2">
+                            <div class="col-md">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="gstin" name="gstin"
+                                        placeholder="12ABCDE3456F7GH" {% if gstin %}value="{{gstin}}" {% endif %}>
+                                    <label for="gstin">GSTIN</label>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-floating">
+                                    <select class="form-select" name="gender" id="floatingSelect"
+                                        aria-label="Floating label select example">
+                                        <option value="Male" {% if gender == "Male" %}selected{% endif %}>Male</option>
+                                        <option value="Femal" {% if gender == "Feale" %}selected{% endif %}>Femal</option>
+                                        <option value="Other" {% if gender == "Other" %}selected{% endif %}>Other</option>
+                                    </select>
+                                    <label for="floatingSelect">Choose gender</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Aadhaar  -->
+                        <div class="row py-2">
+                            <span class="mb-2">Aadhaar card</span>
+                            <div class="input-group">
+                                <input type="file" name="aadhaar" accept="image/png, image/jpg, image/jpeg"
+                                    class="form-control" id="inputGroupFile02">
+                                <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                            </div>
+                        </div>
+                        <!-- Password -->
+                        <div class="row g-3 py-2">
+                            <div class="col-md">
+                                <div class="form-floating">
+                                    <input type="password" class="form-control" id="password" name="password1"
+                                        placeholder="abhay" required {% if password %}value="{{password}}" {% endif %}>
+                                    <label for="password">Password <span class="text-danger">*</span></label>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-floating">
+                                    <input type="password" class="form-control" id="c_password" name="password2"
+                                        placeholder="confirm password" required {% if password %}value="{{password}}"
+                                        {% endif %}>
+                                    <label for="c_password">Confirm password <span class="text-danger">*</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md">
+                                <input type="checkbox" id="showPassword" class="showPassword">
+                                <label for="showPassword">Show password</label>
+                            </div>
+                        </div>
+    
+                        <div class="row g-3 py-2 align-items-end">
+                            <div class="col-md">
+                                <input type="submit" class="btn-lg btn-dark px-5 mt-2" value="Sign in">
+                            </div>
+                            <div class="col-md">
+                                <span>
+                                    Already have an account?
+                                    <a href="/authenticaion/login">login</a>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock content %}

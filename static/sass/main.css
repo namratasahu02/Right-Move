@@ -1,0 +1,43 @@
+label {
+  -webkit-user-select: none !important;
+     -moz-user-select: none !important;
+      -ms-user-select: none !important;
+          user-select: none !important;
+}
+
+* {
+  -webkit-box-sizing: border-box !important;
+          box-sizing: border-box !important;
+}
+
+.gradient-custom {
+  min-height: 100vh;
+  background: #f093fb;
+  background: -webkit-gradient(linear, left top, right bottom, from(#f093fb), to(#f5576c));
+  background: linear-gradient(to bottom right, #f093fb, #f5576c);
+}
+
+.radius-1rem {
+  border-radius: 1rem !important;
+}
+
+.rounded-5 {
+  border-radius: 0.5rem !important;
+  overflow: hidden;
+}
+
+.ck-content {
+  height: 50vh;
+}
+
+.product-card {
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.product-card:hover {
+  -webkit-transform: scale(1.03);
+          transform: scale(1.03);
+  border: 1px solid #b6b6b6 !important;
+}
+/*# sourceMappingURL=main.css.map */

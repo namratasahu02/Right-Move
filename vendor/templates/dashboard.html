@@ -1,0 +1,66 @@
+{% extends 'basic.html' %}
+{%load static %}
+{%load images %}
+
+{% block content %}
+<div class="wrapper bg-light">
+
+    <section class="mt-5 p-4">
+        <div class="rounded-pill p-3 bg-white d-flex justify-content-between align-items-center">
+            <h3><i class="fas fa-tachometer-alt "></i> {{request.user}} Dashboard</h3>
+            <a href="add" class="btn btn-success rounded-pill">
+                <i class="fas fa-plus"></i> Add Property
+            </a>
+        </div>
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible fade show sticky-top col-md-7 col-12 mx-auto" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </section>
+
+    <section class=" p-4">
+        <div class="table-responsive border rounded rounded-5">
+            <table class="table table-striped align-middle caption-top">
+                <caption>
+                    <p class="d-flex justify-content-between px-5">
+                        <span>List of Properties</span>
+                        <span>Total listing 3</span>
+                    </p>
+                </caption>
+                <thead>
+                    <tr>
+                        <th scope="col">pid</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Manage</th> 
+                    </tr> 
+                </thead> 
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td scope="row">{{product.id}}</td>
+                        <td><img height="50px" src="/media/{{ product | get_first_image }}"></td>
+                        <td>{{product.title}}d</td>
+                        <td>{{product.category}}</td>
+                        <td>{{product.status}}</td>
+                        <td>
+                            <form method="POST"> {% csrf_token %}
+                                <a href="/vendor/edit/{{product.id}}" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-pencil-alt"></i> Edit</a>
+                                <input type="submit" class="btn btn-outline-danger btn-sm" value="Delete">
+                                <input type="text" name="pid" value="{{product.id}}" hidden>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+{% endblock content %}

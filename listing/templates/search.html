@@ -1,0 +1,40 @@
+{% extends 'basic.html' %}
+{%load static %}
+{%load images %}
+
+
+{% block content %}
+<div class="search bg-light">
+    <section class="result-count">
+        <div class="d-flex flex-wrap justify-content-between px-4 pt-3">
+            <span>Result of "{{keywords}}"</span>
+            <span>total {{total}} properties found</span>
+        </div>
+    </section>
+    <hr>
+    <section class="showcase pb-5">
+        <div class="row row-cols-auto w-100 align-items-stretch justify-content-center">
+            {% for product in products %}
+            <a href="/listing/{{product.id}}" class="text-dark text-decoration-none col p-2" style="width: 20rem;">
+                <div class="card bg-white border-light shadow-sm rounded-5 h-100 product-card">
+                    <div class="card-img-top overflow-hidden" style="height: 180px;">
+                        <img src="/media/{{ product | get_first_image}}" class="card-img-top h-100 w-100" alt="...">
+                    </div>
+                    <hr class="m-0">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.title }}</h5>
+                        <p class="card-text text-muted">
+                            {{product.size}} {{product.size_unit}} {{product.category}} 
+                            in {{product.district}}, {{product.state}} ({{product.zip_code}})
+                        </p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        {{product.update_at.date}}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock content %}

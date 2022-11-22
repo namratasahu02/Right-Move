@@ -1,0 +1,237 @@
+{% extends 'basic.html' %}
+{%load static %}
+{%load images %}
+{% block content %}
+
+<div class="homepage pb-5" style="background: #73747518;">
+    <section class="messages d-flex justify-content-center position-absolute w-100">
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible fade show sticky-top col-md-7 col-12" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close mt-2" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </section>
+
+    <section class="hero-banner">
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% for banner in banners %}
+                <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}"
+                    style="background-image: url('/media/{{banner.image}}'); background-position: center; background-size: cover;">
+                    <!--<img src="/media/{{banner.image}}" class="d-block w-100" alt="...">-->
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>{{banner.name}}</h5>
+                        <p>{{banner.description}}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <style>
+            .hero-banner .carousel-inner .carousel-item {
+                min-height: 720px;
+                max-height: calc(100vh - 55px);
+            }
+
+            @media only screen and (max-width: 600px) {
+                .hero-banner img {
+                    min-height: 100vh !important;
+                }
+            }
+        </style>
+    </section>
+
+    <section class="ad_section bg-light m-2 m-md-3 m-lg-4 border border-warning rounded-5 py-3">
+        <h1 class="fs-3 ps-4 pb-4"><i class="fas fa-crown text-warning"></i> Highlighted Properties</h1>
+        <div class="knox-carousel d-flex">
+            <button id="left-button" class="btn btn-light px-1 fs-3">
+                <i class="fas fa-angle-left"></i>
+            </button>
+            <center class="knox-slider w-100 overflow-hidden" id="content" style="white-space: nowrap;">
+                {% for product in ad_products %}
+                <div class="knox-slider-inside d-inline-block p-2" style="max-width: 22rem; min-width: 20rem;" data-aos="zoom-out-up" data-aos-duration="700">
+                    <!-- Start custom code -->
+                    <a href="/listing/{{product.id}}" class="text-dark text-decoration-none">
+                        <div class="card bg-white border-light shadow-sm rounded-5 h-100 product-card">
+                            <div class="card-img-top overflow-hidden" style="height: 220px;">
+                                <img src="/media/{{ product | get_first_image}}" class="card-img-top h-100 w-100"
+                                    alt="...">
+                            </div>
+                            <hr class="m-0">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.title }}</h5>
+                                <p class="card-text text-muted">
+                                    {{product.size}} {{product.size_unit}} {{product.category}}
+                                    in {{product.district}}, {{product.state}} ({{product.zip_code}})
+                                </p>
+                            </div>
+                            <div class="card-footer text-muted">
+                                {{product.update_at.date}}
+                            </div>
+                        </div>
+                    </a>
+                    <!-- END custom code -->
+                </div>
+                {% endfor %}
+            </center>
+            <button id="right-button" class="btn btn-light px-1 fs-3">
+                <i class="fas fa-angle-right"> </i>
+            </button>
+        </div>
+    </section>
+
+    <section class="ratio ratio-21x9" style="max-height: 360px;">
+        <div class="banner" style="background: url('/media/{{banner2.image}}'); background-position: center; background-attachment: fixed; background-size: cover;">
+        </div>
+    </section>
+
+    
+
+    <section class="showcase pb-5 mt-5 m-2">
+        <div class="row row-cols-auto w-100 align-items-stretch justify-content-center">
+            {% for product in products %}
+            <a href="/listing/{{product.id}}" class="text-dark text-decoration-none col py-3" style="width: 19rem;" data-aos="zoom-out-up" data-aos-duration="700">
+                <div class="card bg-white border-light shadow-sm rounded-5 h-100 product-card">
+                    <div class="card-img-top overflow-hidden" style="height: 180px;">
+                        <img src="/media/{{ product | get_first_image}}" class="card-img-top h-100 w-100" alt="...">
+                    </div>
+                    <hr class="m-0">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.title }}</h5>
+                        <p class="card-text text-muted">
+                            {{product.size}} {{product.size_unit}} {{product.category}}
+                            in {{product.district}}, {{product.state}} ({{product.zip_code}})
+                        </p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        {{product.update_at.date}}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    <section class="ad_section bg-light m-2 m-md-3 m-lg-4 border border-warning rounded-5 py-3">
+        <h1 class="fs-3 ps-4 pb-4"><i class="fas fa-crown text-warning"></i> Best Home in your city</h1>
+        <div class="knox-carousel d-flex">
+            <button id="left-button" class="btn btn-light px-1 fs-3">
+                <i class="fas fa-angle-left"></i>
+            </button>
+            <center class="knox-slider w-100 overflow-hidden" id="content" style="white-space: nowrap;">
+                {% for product in ad_products %}
+                <div class="knox-slider-inside d-inline-block p-2" style="max-width: 22rem; min-width: 20rem;" data-aos="zoom-out-up" data-aos-duration="700">
+                    <!-- Start custom code -->
+                    <a href="/listing/{{product.id}}" class="text-dark text-decoration-none">
+                        <div class="card bg-white border-light shadow-sm rounded-5 h-100 product-card">
+                            <div class="card-img-top overflow-hidden" style="height: 220px;">
+                                <img src="/media/{{ product | get_first_image}}" class="card-img-top h-100 w-100"
+                                    alt="...">
+                            </div>
+                            <hr class="m-0">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.title }}</h5>
+                                <p class="card-text text-muted">
+                                    {{product.size}} {{product.size_unit}} {{product.category}}
+                                    in {{product.district}}, {{product.state}} ({{product.zip_code}})
+                                </p>
+                            </div>
+                            <div class="card-footer text-muted">
+                                {{product.update_at.date}}
+                            </div>
+                        </div>
+                    </a>
+                    <!-- END custom code -->
+                </div>
+                {% endfor %}
+            </center>
+            <button id="right-button" class="btn btn-light px-1 fs-3">
+                <i class="fas fa-angle-right"> </i>
+            </button>
+        </div>
+    </section>
+    <section class="blog">
+        <div id="blog_carousel" class="carousel slide carousel-dark" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                {% for blog in blogs %}
+                <div class="carousel-item {% if forloop.counter is 1 %} active {% endif %}">
+                    <div class="card m-3 p-3 rounded-5">
+                        <div class="card-body overflow-hidden" style="height: 360px;">
+                            <h5 class="card-title">
+                                {{blog.title}}
+                            </h5>
+                            <p class="card-text">
+                                {% autoescape off %}
+                                {{blog.blog}}
+                                {% endautoescape %}
+                            </p>
+                            <p class="card-text"><small class="text-muted">{{blog.created_at}}</small></p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#blog_carousel" data-bs-slide="prev"
+                style="width: 80px;">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#blog_carousel" data-bs-slide="next"
+                style="width: 80px;">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </section>
+</div>
+<style>
+    .product-card:hover {
+        transition: 0.3s;
+        transform: scale(1.03);
+        box-shadow: 0px 0px 15px #80808048;
+    }
+
+    .rounded-5 {
+        overflow: hidden;
+        border-radius: 0.5rem !important;
+    }
+</style>
+{% endblock content %}
+
+{% block script %}
+<script>
+    var elementWidth = $(".knox-slider-item").innerWidth()
+
+    $('#right-button').click(function() {
+      event.preventDefault();
+      $('#content').animate({
+        scrollLeft: "+=300px"
+      }, "slow");
+   });
+   
+     $('#left-button').click(function() {
+      event.preventDefault();
+      $('#content').animate({
+        scrollLeft: "-=300px"
+      }, "slow");
+   });
+</script>
+{% endblock script %}

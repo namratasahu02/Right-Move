@@ -1,0 +1,141 @@
+{% extends 'basic.html' %}
+{%load static %}
+{%load images %}
+{%load bullet_points %}
+{%load extras %}
+{% block content %}
+<style>
+    .wrapper {
+        background: none;
+        background-image: url('{% static "/bg-web.png" %}') !important;
+    }
+</style>
+<div class="bg-whie">
+    <section class="single-product">
+        <div class="container shadow-lg p-3 bg-white rounded-5 my-4">
+            <div class="row row-cols-1 row-cols-md-2">
+                <div class="col p-2">
+                    <div class="product-images">
+                        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                {% for image in images %}
+                                <div class="carousel-item {% if forloop.counter is 1 %} active {% endif %}">
+                                    <img src="/media/{{ image.image }}" class="d-block w-100" alt="...">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5 style="text-shadow: 1px 1px #000;">{{image.image_type}}</h5>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col p-2">
+                    <div class="title mb-3">
+                        <h5>{{product.title}}</h5>
+                    </div>
+                    <div class="key_detail my-2">
+                        <p class="text-muted small mb-1 mt-2"><i class="fas fa-info-circle"></i> Key Details</p>
+                        {% for point in bps %}
+                        <li class="py-1">{{point.bullet_point}}</li>
+                        {% endfor %}
+                    </div>
+                    <div class="others my-3 d-flex">
+                        <div class="size fs-5 px-3">
+                            <i class="fas fa-expand-arrows-alt text-muted"></i>
+                            {{product.size}} {{product.size_unit}}
+                        </div>
+                        &nbsp; &nbsp; &nbsp;
+                        <div class="category fs-5 px-3">
+                            <i class="fas fa-building text-muted"></i>
+                            {{product.category}}
+                        </div>
+                    </div>
+                    <div class="address my-3">
+                        <p class="text-muted small mb-1 mt-2"><i class="fas fa-map-marker-alt"></i> Address:</p>
+                        <address>
+                            {{product.address}},
+                            {{product.district}},
+                            {{product.state}}
+                            ({{product.zip_code}})
+                        </address>
+                    </div>
+                    <div class="contact my-3">
+                        <!-- <p class="text-muted small my-2"><i class="fas fa-headset"></i> Contact:</p> -->
+                        <div class="d-flex">
+                            <div class="phone">
+                                <i class="fas fa-phone text-muted"></i>
+                                <a class="text-decoration-none text-dark" href="tel:8057575444"> +91 8057575444</a>
+                            </div>
+                            &nbsp; &nbsp; &nbsp;
+                            <div class="email">
+                                <i class="fas fa-envelope text-muted"></i>
+                                <a class="text-decoration-none text-dark" href="mailto: mr.abhay90@gmail.com">
+                                    namrata90@gmail.com </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="price-range my-3">
+                        <p class="text-muted small my-2"><i class="fas fa-tag"></i> Price Range: </p>
+                        <h5>₹{{product.price|sort_price}} &nbsp; to &nbsp; ₹{{product.mrp|sort_price}}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="row p-2">
+                <h6>Description:</h6>
+                <p>
+                    {% autoescape off %}
+                    {{product.description}}
+                    {% endautoescape %}
+                </p>
+            </div>
+            <style>
+                .google-map > * {
+                    width: 100% !important;
+                }
+            </style>
+            <div class="google-map w-100 rounded-5 overflow-hidden mx-auto">
+                {% autoescape off %}
+                    {{ product.map_link }}
+                {% endautoescape %}
+            </div>
+            <!-- <iframe src="{{ product.map_link }}" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
+        </div>
+    </section>
+
+    <section class="showcase pb-5">
+        <div class="row row-cols-auto w-100 align-items-stretch justify-content-center">
+            {% for product in products %}
+            <a href="/listing/{{product.id}}" class="text-dark text-decoration-none col p-2" style="width: 20rem;">
+                <div class="card bg-white border-light shadow-sm rounded-5 h-100 product-card">
+                    <div class="card-img-top overflow-hidden" style="height: 180px;">
+                        <img src="/media/{{ product | get_first_image}}" class="card-img-top h-100 w-100" alt="...">
+                    </div>
+                    <hr class="m-0">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.title }}</h5>
+                        <p class="card-text text-muted">
+                            {{product.size}} {{product.size_unit}} {{product.category}} 
+                            in {{product.district}}, {{product.state}} ({{product.zip_code}})
+                        </p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        {{product.update_at.date}}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock content %}

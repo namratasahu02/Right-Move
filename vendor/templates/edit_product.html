@@ -1,0 +1,344 @@
+{% extends 'basic.html' %}
+{%load static %}
+{% block content %}
+
+<div class="listing add_product gradient-custom py-4 d-flex justify-content-center align-items-center">
+
+    <div class="col-12 col-md-11 col-lg-10" method="POST">
+        {% csrf_token %}
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        <!-- Product details -->
+        <form id="section-1" name="details" method="POST" class="p-4 py-md-5 bg-white radius-1rem my-4">
+            {% csrf_token %}
+            <!-- Category | Status -->
+            <div class="row g-3 py-2">
+                <div class="col-md">
+                    <div class="form-floating">
+                        <select class="form-select h-100" name="category" id="category" required>
+                            <option selected disabled>Not selected</option>
+                            {% for cate in categories %}
+                            <option value="{{cate}}" {% if cate == category %} selected {% endif %}>{{cate}}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <label for="category">Select category <span class="text-danger">*</span></label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <select class="form-select h-100" name="status" id="status">
+                                {% for s in all_status %}
+                                <option value="{{s}}" {% if s == status %} selected {% endif %}>{{s}}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="status">Select Status <span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="row g-3 py-2">
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="title" name="title" placeholder="abhay" required
+                            {% if title %}value="{{title}}" {% endif %}>
+                        <label for="title">Property title<span class="text-danger">*</span></label>
+                    </div>
+                </div>
+            </div>
+            <!-- Pricing -->
+            <div class="row g-3 py-2">
+                <div class="col-md">
+                    <div class="border d-flex rounded-2 overflow-hidden">
+                        <span class="input-group-text border-0 rounded-0" id="price_indicator">Rs.</span>
+                        <div class="form-floating w-100">
+                            <input type="number" class="form-control border-0" id="price" name="price"
+                                placeholder="1000" required {% if mrp %}value="{{price}}" {% endif %}
+                                aria-describedby="price_indicator">
+                            <label for="mrp">Minimum Price<span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="border d-flex rounded-2 overflow-hidden">
+                        <span class="input-group-text border-0 rounded-0" id="price_indicator">Rs.</span>
+                        <div class="form-floating w-100">
+                            <input type="number" class="form-control border-0" id="mrp" name="mrp" placeholder="1000"
+                                required {% if mrp %}value="{{mrp}}" {% endif %} aria-describedby="price_indicator">
+                            <label for="mrp">Maximum price<span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Brand | Size -->
+            <div class="row g-3 py-2">
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="brand" name="brand" required placeholder="knox"
+                            {% if brand %}value="{{brand}}" {% endif %}>
+                        <label for="brand">Builder name</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="border d-flex rounded-2 overflow-hidden">
+                        <div class="form-floating w-100">
+                            <input type="text" class="form-control border-0" id="size" name="size" placeholder="1000"
+                                required {% if size %}value="{{size}}" {% endif %} aria-describedby="size_unit">
+                            <label for="size">Size<span class="text-danger">*</span></label>
+                        </div>
+                        <select class="input-group-text border-0 rounded-0" name="size_unit" id="size_unit">
+                            {% for unit in all_size_unit %}
+                            <option value="{{unit}}" {% if unit == size_unit %} selected {% endif %}>{{unit}}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- Address -->
+            <div class="row g-3 py-2">
+                <div class="col-md">
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <select class="form-select h-100" name="state" id="state">
+                                {% for s in states %}
+                                <option value="{{s}}" {% if s == state %} selected {% endif %}>{{s}}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="state">State <span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="district" name="district" placeholder="knox" {% if district %} value="{{district}}" {% endif %} required>
+                        <label for="district">District<span class="text-danger">*</span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3 py-2">
+                <div class="col-md">
+                    <div class="form-floating"> 
+                        <input type="text" class="form-control" id="address" name="address" placeholder="knox" {% if address %}value={{address}}{% endif %} required> 
+                        <label for="address">Local address<span class="text-danger">*</span></label> 
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="zip_code" name="zip_code" {% if zip_code %} value="{{zip_code}}"{% endif %} placeholder="knox" required>
+                        <label for="zip_code">Zip Code<span class="text-danger">*</span></label>
+                    </div>
+                </div>
+            </div>
+            <!-- Description -->
+            <div class="row g-3 py-2">
+                <div class="col-md">
+                    <label class="py-2" for="">Description:</label>
+                    <textarea class="input-group w-100" name="description" id="editor">
+                        {% if description %} {{description}} {% endif %}
+                    </textarea>
+                </div>
+            </div>
+
+            <!-- Submit button -->
+            <div class="row p-3 py-2">
+                <div class="col-md d-flex justify-content-end align-items-end">
+                    <a href="/vendor/" class="btn btn-outline-success btn-lg me-4">Dashboard</a>
+                    <input type="text" value="details" name="details" hidden>
+                    <input type="submit" value="Save Changes" class="btn btn-warning btn-lg">
+                </div>
+            </div>
+        </form>
+
+        <!-- Images -->
+        <section id="section-2" class="p-4 py-md-5 bg-white radius-1rem my-3">
+            <h5>Images:</h5>
+            <div class="row g-3 py-2">
+                <div class="col-md d-flex flex-wrap justify-content-evenly">
+                    {% for img in images %}
+                    <form method="POST" class="text-center border m-2">
+                        {% csrf_token %}
+                        <img height="100px" src="/media/{{img.image}}" alt="">
+                        <h6 class="m-0 py-2 px-2">{{img.image_type}}</h6>
+                        <input type="submit" value="Remove" name="remove_image" class="btn btn-danger w-100 rounded-0">
+                        <input type="text" value="{{img.id}}" name="image_id" hidden>
+                    </form>
+                    {% endfor %}
+                </div>
+            </div>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div id="images">
+                </div>
+
+                <!-- Submit button -->
+                <div class="row p-3 py-2">
+                    <div class="col-md align-items-end">
+                        <button type="button" onclick="addImageField()" class="btn btn-outline-dark m-2 add-image-btn">
+                            Add new image
+                        </button>
+                        <button type="button" disabled onclick="removeImageField()"
+                            class="btn btn-outline-danger m-2 remove-image-btn">
+                            Remove image
+                        </button>
+                        <input type="submit" value="Save Changes" name="add_images" class="btn btn-warning btn-lg m-2 float-end">
+                        <a href="/vendor/" class="btn btn-outline-success btn-lg float-end m-2">Dashboard</a>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <!-- Bullet Points -->
+        <form id="section-3" method="POST" name="bullet_points" class="p-4 py-md-5 bg-white radius-1rem my-3">
+            {% csrf_token %}
+            <div id="bullet-points">
+                <h5>Bullet Points: </h5>
+                {% for bp in bps %}
+                <script>
+                    counter2 = {{forloop.counter}} + 1
+                </script>
+                <div class="row g-3 py-2" id="bpRow-{{forloop.counter}}">
+                    <div class="col-md d-flex">
+                        <div class="form-floating w-100">
+                            <input type="text" class="form-control" id="bp-{{forloop.counter}}"
+                                name="bullet-point-{{forloop.counter}}" placeholder="knox" required
+                                value="{{bp.bullet_point}}">
+                            <label for="bp-{{forloop.counter}}">Bullet Point {{forloop.counter}}<span
+                                    class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- Submit button -->
+            <div class="row p-3 py-2">
+                <div class="col-md align-items-end">
+                    <button type="button" onclick="addBpField()" class="btn btn-outline-dark m-2 add-bp-btn">
+                        Add bullet point
+                    </button>
+                    <button type="button" onclick="removeBpField()" class="btn btn-outline-danger m-2 remove-bp-btn">
+                        Remove bullet point
+                    </button>
+                    <input type="text" value="bullet-points" name="bullet_points" hidden>
+                    <input type="submit" value="Save Changes" class="btn btn-warning btn-lg m-2 float-end">
+                    <a href="/vendor/" class="btn btn-outline-success btn-lg float-end m-2">Dashboard</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
+{% block script %}
+
+<script>
+    var counter = 1
+
+    function addImageField() {
+        var html = `
+        <div class="row g-3 py-2 align-items-end" id="image-row-${counter}">
+            <div class="col-md">
+                <label for="image-${counter}" class="mb-2">Add Image <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <input type="file" value='' name="image-${counter}" accept="image/png, image/jpg, image/jpeg"
+                        class="form-control" id="image-${counter}" required>
+                </div>
+            </div>
+
+            <div class="col-md">
+                <div class="form-floating">
+                    <select class="form-select h-100" name="img-type-${counter}" id="img_type_${counter}">
+                        {% for type in img_types %}
+                        <option value="{{type}}" {% if type == img_type %} selected {% endif %} >{{type}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="img_type_${counter}">Image type</label>
+                </div>
+            </div>
+        </div>
+        `
+        $(html).appendTo("#images");
+
+        // Update add and remove button
+        counter++
+        $('.add-image-btn').text('Add new image');
+        $('.remove-image-btn').text('Remove last image');
+        $('.remove-image-btn').prop('disabled', false);
+
+        if (counter == 9) {
+            $('.add-image-btn').text('Add image');
+            $('.add-image-btn').prop('disabled', true);
+        }
+    }
+
+    function removeImageField() {
+        counter--
+        $('#image-row-' + counter).remove();
+
+        // Update add and remove button
+        $('.add-image-btn').text('Add new image');
+        $('.remove-image-btn').text('Remove last image');
+        $('.add-image-btn').prop('disabled', false);
+
+        if (counter <= 1) {
+            $('.remove-image-btn').text('Remove image');
+            $('.remove-image-btn').prop('disabled', true);
+            counter = 1
+        }
+    }
+
+    function addBpField() {
+        if (counter2 != 10) {
+            var html = `
+                <div class="row g-3 py-2" id="bpRow-${counter2}">
+                    <div class="col-md d-flex">
+                        <div class="form-floating w-100">
+                            <input type="text" class="form-control" id="bp-${counter2}" name="bullet-point-${counter2}" placeholder="knox" required>
+                            <label for="bp-${counter2}">Bullet Point ${counter2}<span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                </div>
+            `
+            $(html).appendTo('#bullet-points');
+            // Update add and remove button
+            counter2++
+            $('.add-bp-btn').text('Add bullet point ' + (counter2));
+            $('.remove-bp-btn').text('Remove bullet point ' + (counter2 - 1));
+            $('.remove-bp-btn').prop('disabled', false);
+
+            if (counter2 == 9) {
+                $('.add-bp-btn').text('Add image');
+                $('.add-bp-btn').prop('disabled', true);
+            }
+        }
+    }
+
+    function removeBpField() {
+        counter2--
+        $('#bpRow-' + counter2).remove();
+
+        // Update add and remove button
+        $('.add-bp-btn').text('Add bullet point ' + counter2);
+        $('.remove-bp-btn').text('Remove bullet point ' + (counter2 - 1));
+        $('.add-bp-btn').prop('disabled', false);
+
+        if (counter2 <= 2) {
+            $('.remove-bp-btn').text('Remove bullet point');
+            $('.remove-bp-btn').prop('disabled', true);
+            counter2 = 2
+        }
+    }
+
+    ClassicEditor.create(document.querySelector('#editor')).catch(error => {
+        console.error(error);
+    });
+</script>
+
+
+{% endblock script %}

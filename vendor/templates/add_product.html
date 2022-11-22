@@ -1,0 +1,371 @@
+{% extends 'basic.html' %}
+{%load static %}
+
+{% block content %}
+
+<div class="listing add_product gradient-custom py-4 d-flex justify-content-center align-items-center">
+    <form action="/vendor/add" class="col-12 col-md-11 col-lg-10" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        <div class="p-4 py-md-5 bg-white radius-1rem">
+            <section class="form-title">
+                <div class="d-flex align-items-center mb-3 pb-1">
+                    <a class="text-decoration-none" href="/">
+                        <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
+                        <span class="h3 fw-bold mb-0 text-dark">{{page_name}}</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Category | Status | Title | MRP | Price | Brand | Qunatity | Address -->
+            <section id="section-1">
+                <!-- Category | Status -->
+                <div class="row g-3 py-2">
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <select class="form-select h-100" name="category" id="category" required>
+                                <option selected disabled>Not selected</option>
+                                {% for cate in categories %}
+                                <option value="{{cate}}" {% if cate == category %} selected {% endif %}>{{cate}}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <label for="category">Select category <span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <select class="form-select h-100" name="status" id="status">
+                                    {% for s in all_status %}
+                                    <option value="{{s}}" {% if s == status %} selected {% endif %}>{{s}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="status">Select Status <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Title -->
+                <div class="row g-3 py-2">
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="title" name="title" placeholder="abhay" required
+                                {% if title %}value="{{title}}" {% endif %}>
+                            <label for="title">Property title<span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Pricing -->
+                <div class="row g-3 py-2">
+                    <div class="col-md">
+                        <div class="border d-flex rounded-2 overflow-hidden">
+                            <span class="input-group-text border-0 rounded-0" id="price_indicator">Rs.</span>
+                            <div class="form-floating w-100">
+                                <input type="number" class="form-control border-0" id="price" name="price"
+                                    placeholder="1000" required {% if mrp %}value="{{price}}" {% endif %}
+                                    aria-describedby="price_indicator">
+                                <label for="mrp">Minimum Price<span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="border d-flex rounded-2 overflow-hidden">
+                            <span class="input-group-text border-0 rounded-0" id="price_indicator">Rs.</span>
+                            <div class="form-floating w-100">
+                                <input type="number" class="form-control border-0" id="mrp" name="mrp"
+                                    placeholder="1000" required {% if mrp %}value="{{mrp}}" {% endif %}
+                                    aria-describedby="price_indicator">
+                                <label for="mrp">Maximum price<span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Brand | Size -->
+                <div class="row g-3 py-2">
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="brand" name="brand" placeholder="knox"
+                                {% if brand %}value="{{brand}}" {% endif %}>
+                            <label for="brand">Builder name</label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="border d-flex rounded-2 overflow-hidden">
+                            <div class="form-floating w-100">
+                                <input type="text" class="form-control border-0" id="size" name="size"
+                                    placeholder="1000" required {% if size %}value="{{size}}" {% endif %}
+                                    aria-describedby="size_unit">
+                                <label for="size">Size<span class="text-danger">*</span></label>
+                            </div>
+                            <select class="input-group-text border-0 rounded-0" name="size_unit" id="size_unit">
+                                {% for unit in all_size_unit %}
+                                <option value="{{unit}}" {% if unit == size_unit %} selected {% endif %}>{{unit}}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- Address -->
+                <div class="row g-3 py-2">
+                    <div class="col-md">
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <select class="form-select h-100" name="state" id="state">
+                                    {% for state in states %}
+                                    <option value="{{state}}">{{state}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="state">State <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="district" name="district" placeholder="knox" required>
+                            <label for="district">District<span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-3 py-2">
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="address" name="address" placeholder="knox" required>
+                            <label for="address">Local address<span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="zip_code" name="zip_code" placeholder="knox" required>
+                            <label for="zip_code">Zip Code<span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Collapse button -->
+                <div class="row py-2">
+                    <div class="col-md">
+                        <button type="button" onclick="showHide('section-2', 'section-1')" id="f-btn-1"
+                            class="btn btn-lg btn-warning mx-2 px-5 float-end">Continue</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Images -->
+            <section id="section-2" class="collapse">
+                <div id="images">
+                    <!-- <div class="row g-3 py-2 align-items-end">
+                        <div class="col-md">
+                            <label for="image-1" class="mb-2">Image 1 <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input type="file" name="image-1" accept="image/png, image/jpg, image/jpeg"
+                                    class="form-control" id="image-1" required>
+                            </div>
+                        </div>
+    
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <select class="form-select h-100" name="img-type-1" id="img_type">
+                                    {% for type in img_types %}
+                                    <option value="{{type}}" {% if type == img_type %} selected {% endif %} >{{type}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="img_type">Image type</label>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+                <!-- Collapse button -->
+                <div class="row py-2">
+                    <div class="col-md">
+                        <button class="btn btn-primary add-image-btn" type="button" onclick="addImageField()">+ Add
+                            image 2</button>
+                        <button class="btn btn-danger remove-image-btn" type="button" disabled
+                            onclick="removeImageField()">Remove image</button>
+                    </div>
+                    <div class="col-md">
+                        <button type="button" onclick="showHide('section-3', 'section-2')" id="f-btn-1"
+                            class="btn btn-lg btn-warning mx-2 px-5 float-end">Continue</button>
+                        <button type="button" onclick="showHide('section-1', 'section-2')" id="f-btn-1"
+                            class="btn btn-lg btn-secondary mx-2 px-5 float-end">Back</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bullet Point -->
+            <section id="section-3" class="collapse">
+                <div id="bullet-points">
+                </div>
+                <!-- Collapse button -->
+                <div class="row py-2">
+                    <div class="col-md">
+                        <button class="btn btn-primary add-bp-btn" type="button" onclick="addBpField()">+ Add bullet
+                            point 2</button>
+                        <button class="btn btn-danger remove-bp-btn" type="button" disabled
+                            onclick="removeBpField()">Remove bullet point</button>
+                    </div>
+                    <div class="col-md">
+                        <button type="button" onclick="showHide('section-4', 'section-3')" id="f-btn-1"
+                            class="btn btn-lg btn-warning mx-2 px-5 float-end">Continue</button>
+                        <button type="button" onclick="showHide('section-2', 'section-3')" id="f-btn-1"
+                            class="btn btn-lg btn-secondary mx-2 px-5 float-end">Back</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Description -->
+            <section id="section-4" class="collapse">
+                <div class="row py-2">
+                    <div class="col-md">
+                        <label class="py-2" for="">Description:</label>
+                        <textarea class="input-group w-100" name="description" id="editor">
+                            {% if description %} {{description}} {% endif %}
+                        </textarea>
+                    </div>
+                </div>
+                <!-- Collapse button -->
+                <div class="row py-2">
+                    <div class="col-md">
+                        <input type="submit" value="Save" class="btn btn-lg px-5 btn-success float-end">
+                        <button type="button" onclick="showHide('section-3', 'section-4')" id="f-btn-1"
+                            class="btn btn-lg btn-secondary mx-2 px-5 float-end">Back</button>
+                    </div>
+                </div>
+
+                <style>
+                    .ck-content {
+                        height: 50vh;
+                    }
+                </style>
+            </section>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
+
+{% block script %}
+
+<script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
+
+<script>
+    function showHide(toShow, toHide) {
+        $('#' + toShow).slideDown(700);
+        $('#' + toHide).slideUp(700);
+    }
+    var counter = 1
+    var counter2 = 1
+
+    function addImageField() {
+        var html = `
+        <div class="row g-3 py-2 align-items-end" id="image-row-${counter}">
+            <div class="col-md">
+                <label for="image-${counter}" class="mb-2">Image ${counter} <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <input type="file" value='' name="image-${counter}" accept="image/png, image/jpg, image/jpeg"
+                        class="form-control" id="image-${counter}" required>
+                </div>
+            </div>
+
+            <div class="col-md">
+                <div class="form-floating">
+                    <select class="form-select h-100" name="img-type-${counter}" id="img_type_${counter}">
+                        {% for type in img_types %}
+                        <option value="{{type}}" {% if type == img_type %} selected {% endif %} >{{type}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="img_type_${counter}">Image type</label>
+                </div>
+            </div>
+        </div>
+        `
+        $(html).appendTo("#images");
+
+        // Update add and remove button
+        counter++
+        $('.add-image-btn').text('Add image ' + (counter));
+        $('.remove-image-btn').text('Remove image ' + (counter - 1));
+        $('.remove-image-btn').prop('disabled', false);
+
+        if (counter == 9) {
+            $('.add-image-btn').text('Add image');
+            $('.add-image-btn').prop('disabled', true);
+        }
+    }
+
+    function removeImageField() {
+        counter--
+        $('#image-row-' + counter).remove();
+
+        // Update add and remove button
+        $('.add-image-btn').text('Add image ' + counter);
+        $('.remove-image-btn').text('Remove image ' + (counter - 1));
+        $('.add-image-btn').prop('disabled', false);
+
+        if (counter <= 2) {
+            $('.remove-image-btn').text('Remove image');
+            $('.remove-image-btn').prop('disabled', true);
+            counter = 2
+        }
+    }
+
+    function addBpField() {
+        if (counter2 != 10) {
+            var html = `
+                <div class="row g-3 py-2" id="bpRow-${counter2}">
+                    <div class="col-md d-flex">
+                        <div class="form-floating w-100">
+                            <input type="text" class="form-control" id="bp-${counter2}" name="bullet-point-${counter2}" placeholder="knox" required>
+                            <label for="bp-${counter2}">Bullet Point ${counter2}<span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                </div>
+            `
+            $(html).appendTo('#bullet-points');
+            // Update add and remove button
+            counter2++
+            $('.add-bp-btn').text('Add bullet point ' + (counter2));
+            $('.remove-bp-btn').text('Remove bullet point ' + (counter2 - 1));
+            $('.remove-bp-btn').prop('disabled', false);
+
+            if (counter2 == 9) {
+                $('.add-bp-btn').text('Add image');
+                $('.add-bp-btn').prop('disabled', true);
+            }
+        }
+    }
+
+    function removeBpField() {
+        counter2--
+        $('#bpRow-' + counter2).remove();
+
+        // Update add and remove button
+        $('.add-bp-btn').text('Add bullet point ' + counter2);
+        $('.remove-bp-btn').text('Remove bullet point ' + (counter2 - 1));
+        $('.add-bp-btn').prop('disabled', false);
+
+        if (counter2 <= 2) {
+            $('.remove-bp-btn').text('Remove bullet point');
+            $('.remove-bp-btn').prop('disabled', true);
+            counter2 = 2
+        }
+    }
+
+    ClassicEditor.create(document.querySelector('#editor')).catch(error => {
+        console.error(error);
+    });
+</script>
+
+<script>
+    addImageField()
+    addBpField()
+</script>
+
+
+{% endblock script %}
+

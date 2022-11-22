@@ -1,0 +1,41 @@
+<!-- Fontawesome 5.4 -->
+<!-- Bootstrap 5.0 -->
+<!-- jQuery 3.6 -->
+
+<section>
+    <div class="knox-carousel d-flex">
+        <button id="left-button" class="btn btn-light">
+            <i class="fas fa-angle-left"></i>
+        </button>
+        <div class="knox-slider w-100 overflow-hidden" id="content" style="white-space: nowrap;">
+            {% for product in ad_products %}
+            <div class="knox-slider-inside d-inline-block p-2" style="width: 20rem;">
+                <!-- Start custom code -->
+                <a href="/listing/{{product.id}}" class="text-dark text-decoration-none">
+                    <div class="card bg-white border-light shadow-sm rounded-5 h-100 product-card">
+                        <div class="card-img-top overflow-hidden" style="height: 220px;">
+                            <img src="/media/{{ product | get_first_image}}" class="card-img-top h-100 w-100"
+                                alt="...">
+                        </div> 
+                        <hr class="m-0">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.title }}</h5>
+                            <p class="card-text text-muted">
+                                {{product.size}} {{product.size_unit}} {{product.category}}
+                                in {{product.district}}, {{product.state}} ({{product.zip_code}})
+                            </p>
+                        </div>
+                        <div class="card-footer text-muted">
+                            {{product.update_at.date}}
+                        </div>
+                    </div>
+                </a>
+                <!-- END custom code -->
+            </div>
+            {% endfor %}
+        </div>
+        <button id="right-button" class="btn btn-light">
+            <i class="fas fa-angle-right"> </i>
+        </button>
+    </div>
+</section>
